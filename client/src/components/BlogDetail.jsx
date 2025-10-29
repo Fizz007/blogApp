@@ -38,7 +38,7 @@ export default function BlogDetail() {
         }`;
 
         const data = await client.fetch(query, { slug });
-
+        console.log(data)
         setPost(data.post);
         setCategories(data.categories || []);
       } catch (err) {

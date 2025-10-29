@@ -10,7 +10,7 @@ const Sidebar = ({ categories, currentCategory }) => {
 
   return (
     <aside className="bg-secondary/30 rounded-lg overflow-hidden">
-      <div className="p-6 pb-8 border-3 rounded-lg border-[#D9D9D9]">
+      <div className="p-6 pb-8 border-1 rounded-lg border-[#D9D9D9]">
         <div className="flex flex-col items-center text-center space-y-4">
           <div className="w-[158px] h-[158px] rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0 overflow-hidden">
             <img
