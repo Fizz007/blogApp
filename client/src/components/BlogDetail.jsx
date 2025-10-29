@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 import Sidebar from "./Sidebar";
 import Breadcrumb from "./Breadcrum";
 import CommentSection from "./Comment";
+import useSEO from "../hooks/useSEO"; 
 
 export default function BlogDetail() {
   const { slug } = useParams();
@@ -23,6 +24,8 @@ export default function BlogDetail() {
             "author": author->name,
             publishedAt,
             body,
+            metaTitle,
+            metaDescription,
             category->{
               _id,
               title,
@@ -38,7 +41,6 @@ export default function BlogDetail() {
         }`;
 
         const data = await client.fetch(query, { slug });
-        console.log(data)
         setPost(data.post);
         setCategories(data.categories || []);
       } catch (err) {
@@ -48,6 +50,12 @@ export default function BlogDetail() {
 
     fetchData();
   }, [slug]);
+
+  useSEO({
+    title: post?.metaTitle || post?.title,
+    description: post?.metaDescription || "Read insightful trading and finance content.",
+    slug,
+  });
 
   if (!post) return <p className="text-center mt-10">Loading...</p>;
 
@@ -97,7 +105,6 @@ export default function BlogDetail() {
                   <PortableText value={post.body} />
                 </div>
 
-                {/* Comment Section */}
                 <CommentSection postId={post._id} />
               </article>
             </div>
