@@ -1,4 +1,3 @@
-// schemas/comment.js
 export default {
   name: 'comment',
   title: 'Comments',
@@ -16,21 +15,25 @@ export default {
       type: 'text',
     },
     {
-      name: 'feedback',
-      title: 'Feedback',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Like', value: 'like' },
-          { title: 'Dislike', value: 'dislike' },
-        ],
-      },
-    },
-    {
       name: 'createdAt',
       title: 'Created At',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
     },
   ],
-}
+
+  // 👇 This makes the list look clean
+  preview: {
+    select: {
+      title: 'text',
+      postTitle: 'post.title',
+    },
+    prepare(selection) {
+      const { title, postTitle } = selection;
+      return {
+        title: title ? title : 'No comment text',
+        subtitle: postTitle ? `Post: ${postTitle}` : 'Unlinked post',
+      };
+    },
+  },
+};
