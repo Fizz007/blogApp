@@ -14,7 +14,8 @@ export default function BlogDetail() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const query = `{
+        const query = `
+        {
           "post": *[_type == "post" && slug.current == $slug][0]{
             _id,
             title,
@@ -22,19 +23,26 @@ export default function BlogDetail() {
             "author": author->name,
             publishedAt,
             body,
-            "category": category->title
+            category->{
+              _id,
+              title,
+              slug
+            }
           },
           "categories": *[_type == "category"]{
+            _id,
             title,
+            slug,
             "count": count(*[_type == "post" && references(^._id)])
           } | order(title asc)
         }`;
 
         const data = await client.fetch(query, { slug });
+
         setPost(data.post);
-        setCategories(data.categories);
+        setCategories(data.categories || []);
       } catch (err) {
-        console.error("Error fetching post:", err);
+        console.error("Error fetching post or categories:", err);
       }
     }
 
@@ -58,15 +66,15 @@ export default function BlogDetail() {
       </div>
 
       {/* Hero Image */}
-      <div className="pt-[72px]">
-        {post.mainImage && (
+      {post.mainImage && (
+        <div className="pt-[72px]">
           <img
             src={urlFor(post.mainImage).width(1240).url()}
             alt={post.title}
             className="w-[1240px] h-[579px] max-w-full lg:w-full object-cover"
           />
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="pt-[72px]">
@@ -91,12 +99,14 @@ export default function BlogDetail() {
 
                 {/* Comment Section */}
                 <CommentSection postId={post._id} />
-
               </article>
             </div>
 
             {/* Sidebar */}
-            <Sidebar categories={categories} currentCategory={post.category} />
+            <Sidebar
+              categories={categories}
+              currentCategory={post.category}
+            />
           </div>
         </div>
       </div>

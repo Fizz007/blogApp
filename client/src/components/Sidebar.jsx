@@ -1,7 +1,14 @@
+import { useMemo } from "react";
 
+const Sidebar = ({ categories, currentCategory }) => {
+  const sortedCategories = useMemo(() => {
+    if (!currentCategory) return categories;
+    const active = categories.find((cat) => cat._id === currentCategory._id);
+    const others = categories.filter((cat) => cat._id !== currentCategory._id);
+    return active ? [active, ...others] : categories;
+  }, [categories, currentCategory]);
 
-const Sidebar = ({ categories }) => (
-  <>
+  return (
     <aside className="bg-secondary/30 rounded-lg overflow-hidden">
       <div className="p-6 pb-8 border-3 rounded-lg border-[#D9D9D9]">
         <div className="flex flex-col items-center text-center space-y-4">
@@ -14,7 +21,7 @@ const Sidebar = ({ categories }) => (
           </div>
 
           <div>
-            <h3 className="text-lg font-mdeium text-foreground mb-2">
+            <h3 className="text-lg font-medium text-foreground mb-2">
               <span className="text-[#5585FF]">Let Sloan </span>
               Summarize It for You
             </h3>
@@ -28,35 +35,45 @@ const Sidebar = ({ categories }) => (
       </div>
 
       {/* Categories */}
-      <div className="pt-[32px] pt-8">
+      <div className="pt-[32px]">
         <h3 className="text-xl font-medium text-foreground pb-[24px]">
           Categories
         </h3>
 
         <div className="space-y-[8px]">
-          {categories.map((category, index) => (
-            <button
-              key={index}
-              className={`w-full flex items-center justify-between py-3 pl-[16px] gap-[8px] text-left group 
-                ${index === 0 ? "text-[#5585FF]" : ""} 
-                border-3 rounded-lg border-[#D9D9D9]`}
-            >
-              <span
-                className={`text-sm font-semibold ${
-                  index === 0 ? "text-[#5585FF]" : "text-[#151515]"
-                }`}
+          {sortedCategories.map((category) => {
+            const isActive =
+              currentCategory?._id === category._id ||
+              currentCategory?.title === category.title;
+
+            return (
+              <button
+                key={category._id}
+                className={`w-full flex items-center justify-between py-3 pl-[16px] gap-[8px] text-left border-3 rounded-lg border-[#D9D9D9] transition
+                  ${isActive ? "bg-[#F5F8FF] border-[#5585FF]" : "hover:bg-gray-50"}
+                `}
               >
-                {category.title}
-              </span>
-              <span className="text-sm font-normal text-muted-foreground p-[16px]">
-                {category.count}
-              </span>
-            </button>
-          ))}
+                <span
+                  className={`text-sm font-semibold ${
+                    isActive ? "text-[#5585FF]" : "text-[#151515]"
+                  }`}
+                >
+                  {category.title}
+                </span>
+                <span
+                  className={`text-sm font-normal p-[16px] ${
+                    isActive ? "text-[#5585FF]" : "text-muted-foreground"
+                  }`}
+                >
+                  {category.count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </aside>
-  </>
-);
+  );
+};
 
-export default Sidebar;
+export default Sidebar
