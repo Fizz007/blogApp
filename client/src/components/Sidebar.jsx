@@ -49,7 +49,7 @@ const Sidebar = ({ categories, currentCategory }) => {
             return (
               <button
                 key={category._id}
-                className={`w-full flex items-center justify-between py-3 pl-[16px] gap-[8px] text-left border-3 rounded-lg border-[#D9D9D9] transition
+                className={`w-full flex items-center justify-between py-3 pl-[16px] gap-[8px] text-left border-1 rounded-lg border-[#D9D9D9] transition
                   ${isActive ? "bg-[#F5F8FF] border-[#5585FF]" : "hover:bg-gray-50"}
                 `}
               >
