@@ -55,7 +55,7 @@ export default function BlogDetail() {
     <div className="my-[150px] mx-[100px]">
       {/* Header */}
       <div className="flex flex-col gap-[10px]">
-        <h4 className="font-medium text-[#000000]">{post.title}</h4>
+        <h4 className="text-2xl font-medium text-[#000000]">{post.title}</h4>
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -71,7 +71,7 @@ export default function BlogDetail() {
           <img
             src={urlFor(post.mainImage).width(1240).url()}
             alt={post.title}
-            className="w-[1240px] h-[579px] max-w-full lg:w-full object-cover"
+            className="w-[1240px] h-[579px] max-w-full lg:w-full object-cover rounded-2xl"
           />
         </div>
       )}
